@@ -1,5 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+
+import { InvestmentService } from '../investment.service';
 
 @Component({
   selector: 'app-investment-results',
@@ -9,13 +11,8 @@ import { Component, Input } from '@angular/core';
   styleUrl: './investment-results.component.css'
 })
 export class InvestmentResultsComponent {
-  // results? tell ts that it might have value of this type or undefined
-  @Input() results?: {
-    year: number,
-    interest: number,
-    valueEndOfYear: number,
-    annualInvestment: number,
-    totalInterest: number,
-    totalAmountInvested: number,
-  }[]; // [] tells ts that the type of "results" is an array (with objects)
+  private investmentService = inject(InvestmentService);
+
+  // returns results as a signal. a computed readonly signal
+  results = computed(() => this.investmentService.resultData());
 }
